@@ -3,7 +3,7 @@
 import re
 import logging
 import time
-import from typing List
+from typing import List
 
 
 def filter_datum(fields: List[str], redaction: str,
