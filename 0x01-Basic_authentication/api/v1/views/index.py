@@ -28,7 +28,7 @@ def stats() -> str:
 
 @app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 def unauthorized() -> None:
-    """GET /api/v1/unauthorized 
+    """GET /api/v1/unauthorized
     Return: error custom page
     """
     abort(401)
