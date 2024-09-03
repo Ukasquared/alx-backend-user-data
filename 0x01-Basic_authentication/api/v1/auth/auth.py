@@ -24,12 +24,15 @@ class Auth():
         if path[-1] != '/':
             if rf"{path}/" in excluded_paths:
                 return False
-            return True
+        return True
 
     def authorization_header(self, request=None
                              ) -> str:
         """ auth header """
-        return None
+        if request is None:
+            return None
+        header = request.headers.get('Authorization')
+        return header
 
     def current_user(self, request=None
                      ) -> TypeVar('User'):
