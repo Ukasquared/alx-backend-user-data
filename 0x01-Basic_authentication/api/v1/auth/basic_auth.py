@@ -35,12 +35,21 @@ class BasicAuth(Auth):
         return decoded.decode('utf-8')
 
     def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str):
-         """ returns username and password"""
-         if not decoded_base64_authorization_header:
-             return (None, None)
-         if not isinstance(decoded_base64_authorization_header, str):
-             return (None, None)
-         if r":" not in decoded_base64_authorization_header:
-             return (None, None)
-         value = re.split(':', decoded_base64_authorization_header)
-         return tuple(value)
+        """ returns username and password"""
+        if not decoded_base64_authorization_header:
+            return (None, None)
+        if not isinstance(decoded_base64_authorization_header, str):
+            return (None, None)
+        if r":" not in decoded_base64_authorization_header:
+            return (None, None)
+        value = re.split(':', decoded_base64_authorization_header)
+        return tuple(value)
+
+    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+        """ returns username based
+        on his email and password
+        """
+        if not user_email or not isinstance(user_email, str):
+            return None
+        if not user_pwd or not isinstance(user_pwd, str):
+            return None
