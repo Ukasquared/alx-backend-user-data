@@ -28,7 +28,9 @@ class BasicAuth(Auth):
 
     def decode_base64_authorization_header(
             self, base64_authorization_header: str) -> str:
-        """decode a base64 string"""
+        """
+        decode a base64 string
+        """
         if not base64_authorization_header:
             return None
         if not isinstance(base64_authorization_header, str):
@@ -43,7 +45,9 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
             ) -> (str, str):
-        """ returns username and password"""
+        """ 
+        returns username and password
+        """
         if not decoded_base64_authorization_header:
             return (None, None)
         if not isinstance(decoded_base64_authorization_header, str):
@@ -74,7 +78,8 @@ class BasicAuth(Auth):
         """overloads Auth and
         retrieves the User
         instance for a
-        request:"""
+        request
+        """
         authorize = request.headers.get('Authorization')
         base64_header = self.extract_base64_authorization_header(authorize)
         decode_header = self.decode_base64_authorization_header(base64_header)
