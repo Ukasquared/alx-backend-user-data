@@ -5,6 +5,8 @@ from api.v1.auth.auth import Auth
 import re
 import base64
 from binascii import Error
+from typing import TypeVar
+from models.user import User
 
 
 class BasicAuth(Auth):
@@ -53,3 +55,10 @@ class BasicAuth(Auth):
             return None
         if not user_pwd or not isinstance(user_pwd, str):
             return None
+        filter_user = User.search({'email': user_email})
+        if len(filter_user) == 0:
+            return None
+        if not filter_user[0].is_valid_password(user_pwd):
+            return None
+        return filter_user[0]
+         
