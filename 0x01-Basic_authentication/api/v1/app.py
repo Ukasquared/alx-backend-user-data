@@ -17,8 +17,9 @@ if auth:
     if auth == 'basic_auth':
         from api.v1.auth.basic_auth import BasicAuth
         auth = BasicAuth()
-    from api.v1.auth.auth import Auth
-    auth = Auth()
+    else:
+        from api.v1.auth.auth import Auth
+        auth = Auth()
 
 
 @app.errorhandler(404)
@@ -56,9 +57,9 @@ def before_request() -> None:
             get_auth = auth.authorization_header(request)
             if get_auth is None:
                 abort(401)
+            request.current_user = auth.current_user(request)
             if auth.current_user(request) is None:
                 abort(403)
-            
 
 
 if __name__ == "__main__":
