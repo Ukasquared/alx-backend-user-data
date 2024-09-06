@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+
 """ Basic Authentication
 Module """
+
 from api.v1.auth.auth import Auth
 import re
 import base64
@@ -13,7 +15,8 @@ class BasicAuth(Auth):
     """Basic
     Authentication
     """
-    def extract_base64_authorization_header(self, authorization_header: str) -> str:
+    def extract_base64_authorization_header(
+            self, authorization_header: str) -> str:
         """ validate authorization header """
         if not authorization_header:
             return None
@@ -23,7 +26,8 @@ class BasicAuth(Auth):
             return None
         return authorization_header[6:]
 
-    def decode_base64_authorization_header(self, base64_authorization_header: str) -> str:
+    def decode_base64_authorization_header(
+            self, base64_authorization_header: str) -> str:
         """decode a base64 string"""
         if not base64_authorization_header:
             return None
@@ -36,7 +40,9 @@ class BasicAuth(Auth):
             return None
         return decoded.decode('utf-8')
 
-    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str):
+    def extract_user_credentials(
+            self, decoded_base64_authorization_header: str
+            ) -> (str, str):
         """ returns username and password"""
         if not decoded_base64_authorization_header:
             return (None, None)
@@ -47,7 +53,9 @@ class BasicAuth(Auth):
         value = re.split(':', decoded_base64_authorization_header)
         return tuple(value)
 
-    def user_object_from_credentials(self, user_email: str, user_pwd: str) -> TypeVar('User'):
+    def user_object_from_credentials(
+            self, user_email: str, user_pwd: str
+            ) -> TypeVar('User'):
         """ returns user based
         on his email and password
         """
@@ -71,5 +79,6 @@ class BasicAuth(Auth):
         base64_header = self.extract_base64_authorization_header(authorize)
         decode_header = self.decode_base64_authorization_header(base64_header)
         data = self.extract_user_credentials(decode_header)
-        user = self.user_object_from_credentials(user_email=data[0], user_pwd=data[1])
-        return user 
+        user = self.user_object_from_credentials(
+               user_email=data[0], user_pwd=data[1])
+        return user
