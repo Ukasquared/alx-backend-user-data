@@ -48,8 +48,8 @@ def not_allowed(error) -> str:
 def before_request() -> None:
     "before request"""
     excluded_path = ['/api/v1/status/',
-                      '/api/v1/unauthorized/',
-                      '/api/v1/forbidden/']
+                     '/api/v1/unauthorized/',
+                     '/api/v1/forbidden/']
 
     if auth:
         authen = auth.require_auth(request.path, excluded_path)
