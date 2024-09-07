@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """ Basic Authentication
-Module 
+Module
 """
 
 from api.v1.auth.auth import Auth
@@ -19,8 +19,8 @@ class BasicAuth(Auth):
     """
     def extract_base64_authorization_header(
             self, authorization_header: str) -> str:
-        """ 
-          validate authorization header 
+        """
+          validate authorization header
         """
         if not authorization_header:
             return None
@@ -49,7 +49,7 @@ class BasicAuth(Auth):
     def extract_user_credentials(
             self, decoded_base64_authorization_header: str
             ) -> (str, str):
-        """ 
+        """
           returns username and password
         """
         if not decoded_base64_authorization_header:
@@ -64,7 +64,7 @@ class BasicAuth(Auth):
     def user_object_from_credentials(
             self, user_email: str, user_pwd: str
             ) -> TypeVar('User'):
-        """ 
+        """
           returns user based
           on his email and password
         """
