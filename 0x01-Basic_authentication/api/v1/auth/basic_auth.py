@@ -7,7 +7,7 @@ Module
 from api.v1.auth.auth import Auth
 import re
 import base64
-from binascii import Error
+# from binascii import Error
 from typing import TypeVar
 from models.user import User
 
@@ -42,7 +42,7 @@ class BasicAuth(Auth):
         decoded = ''
         try:
             decoded = base64.b64decode(base64_authorization_header)
-        except Error:
+        except Exception:
             return None
         return decoded.decode('utf-8')
 
