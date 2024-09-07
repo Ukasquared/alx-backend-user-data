@@ -17,8 +17,12 @@ if auth:
     if auth == 'basic_auth':
         from api.v1.auth.basic_auth import BasicAuth
         auth = BasicAuth()
-    from api.v1.auth.auth import Auth
-    auth = Auth()
+    elif auth == 'session_auth':
+        from api.v1.auth.session_auth import SessionAuth
+        auth = SessionAuth()
+    else:
+        from api.v1.auth.auth import Auth
+        auth = Auth()
 
 
 @app.errorhandler(404)
@@ -47,8 +51,8 @@ def not_allowed(error) -> str:
 def before_request() -> None:
     "before request"""
     excluded_path = ['/api/v1/status/',
-                      '/api/v1/unauthorized/',
-                      '/api/v1/forbidden/']
+                     '/api/v1/unauthorized/',
+                     '/api/v1/forbidden/']
 
     if auth:
         authen = auth.require_auth(request.path, excluded_path)
@@ -56,9 +60,9 @@ def before_request() -> None:
             get_auth = auth.authorization_header(request)
             if get_auth is None:
                 abort(401)
+            request.current_user = auth.current_user(request)
             if auth.current_user(request) is None:
                 abort(403)
-            request.current_user = auth.current_user(request)
 
 
 if __name__ == "__main__":
