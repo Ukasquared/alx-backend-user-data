@@ -49,21 +49,26 @@ def not_allowed(error) -> str:
 
 @app.before_request
 def before_request() -> None:
-    "before request"""
+    """
+      before request
+    """
     excluded_path = ['/api/v1/status/',
                      '/api/v1/unauthorized/',
-                     '/api/v1/forbidden/']
+                     '/api/v1/forbidden/',
+                     '/api/v1/auth_session/login/'
+                    ]
 
     if auth:
+        # if authen is true, then authentication is needed
         authen = auth.require_auth(request.path, excluded_path)
         if authen:
             get_auth = auth.authorization_header(request)
-            if get_auth is None:
-                abort(401)
+            get_session = auth.session_cookie(request)
+            if get_auth is None and get_session is None:
+                return None, abort(401)
             request.current_user = auth.current_user(request)
             if auth.current_user(request) is None:
                 abort(403)
-
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
