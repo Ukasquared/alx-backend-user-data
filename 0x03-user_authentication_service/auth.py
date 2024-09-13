@@ -22,7 +22,7 @@ def _generate_uuid():
     """
     u_string = uuid.uuid4()
     return str(u_string)
- 
+
 
 class Auth:
     """Auth class to interact with the authentication database.
@@ -33,7 +33,8 @@ class Auth:
 
     def register_user(self, email: str, password: str) -> User:
         """ register users """
-        user = self._db._session.query(User).filter(User.email == email).first()
+        user = self._db._session.query(User).filter(
+               User.email == email).first()
         if user:
             raise ValueError(f"User {email} already exists")
         new_user = self._db.add_user(email, _hash_password(password))
@@ -41,10 +42,12 @@ class Auth:
 
     def valid_login(self, email: str, password: str) -> bool:
         """ check if existing user can login"""
-        user = self._db._session.query(User).filter(User.email == email).first()
+        user = self._db._session.query(User).filter(
+                 User.email == email).first()
         if user:
             u_password = password.encode('utf-8')
-            result = bcrypt.checkpw(u_password, user.hashed_password)
+            result = bcrypt.checkpw(u_password,
+                                    user.hashed_password)
             if result:
                 return True
         return False
@@ -91,7 +94,7 @@ class Auth:
         try:
             user = self._db.find_user_by(reset_token=reset_token)
             new_passwd = _hash_password(password)
-            self._db.update_user(user.id, 
+            self._db.update_user(user.id,
                                  password=password,
                                  reset_token=None)
         except NoResultFound:

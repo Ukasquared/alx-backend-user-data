@@ -11,6 +11,7 @@ def pay_load():
     """ return """
     return jsonify({"message": "Bienvenue"})
 
+
 @app.route("/users", methods=["POST"], strict_slashes=False)
 def register_user():
     """ registers
@@ -25,6 +26,7 @@ def register_user():
             except ValueError:
                 return jsonify({"message": "email already registered"}), 400
         return jsonify({"email": email, "message": "user created"})
+
 
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
 def log_in():
@@ -42,6 +44,7 @@ def log_in():
         res.set_cookie("session_id", session_id)
         return res
 
+
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def log_out():
     """ logs the user
@@ -52,6 +55,7 @@ def log_out():
     if user:
         destroy_session(user.id)
         return redirect(url_for('/'))
+
 
 @app.route("/profile", methods=["GET"], strict_slashes=False)
 def profile():
@@ -65,16 +69,18 @@ def profile():
         abort(403)
     return jsonify({"email": user.email}), 200
 
+
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token():
     """reset user password"""
     email = request.form["email"]
     try:
         token = AUTH.get_reset_password_token(email)
-        return jsonify({"email": email, 
+        return jsonify({"email": email,
                        "reset_token": token}), 200
     except ValueError:
         abort(403)
+
 
 @app.route("/reset_password", methods=["PUT"], strict_slashes=False)
 def update_password():
@@ -84,7 +90,7 @@ def update_password():
     password = request.form["new_password"]
     try:
         AUTH.update_password(token, password)
-        return jsonify({"email": email, 
+        return jsonify({"email": email,
                        "message": "Password updated"}), 200
     except ValueError:
         abort(403)
