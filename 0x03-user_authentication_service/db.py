@@ -70,6 +70,7 @@ class DB:
                 raise ValueError
 
         user = self.find_user_by(id=user_id)
-        if user:
-            self._session.query(User).filter(User.id == user.id).update(update_val)
-            self._session.commit()
+        if not user:
+            return
+        self._session.query(User).filter(User.id == user.id).update(update_val)
+        self._session.commit()
