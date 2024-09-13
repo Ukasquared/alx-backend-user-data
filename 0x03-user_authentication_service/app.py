@@ -17,14 +17,14 @@ def register_user():
     new user
     """
     if request.method == "POST":
-        email = request.args.get("email")
-        password = request.args.get("password")
+        email = request.form.get("email")
+        password = request.form.get("password")
         if email and password:
             try:
                 user = AUTH.register_user(email, password)
-                return jsonify({"email": "<registered email>", "message": "user created"})
             except ValueError:
                 return jsonify({"message": "email already registered"}), 400
+        return jsonify({"email": email, "message": "user created"})
 
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
 def log_in():
@@ -90,4 +90,4 @@ def update_password():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", debug=True, port="5000")
