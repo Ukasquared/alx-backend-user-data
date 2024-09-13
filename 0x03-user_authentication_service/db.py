@@ -10,6 +10,8 @@ from sqlalchemy.exc import InvalidRequestError
 
 from user import Base, User
 
+
+
 class DB:
     """DB class
     """
@@ -31,7 +33,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email, hashed_password) -> User:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
          add user to database
         """
@@ -68,4 +70,3 @@ class DB:
             raise(e)
         self._session.add(user)
         self._session.commit()
-
