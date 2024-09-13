@@ -4,6 +4,7 @@ import bcrypt
 from db import DB
 from user import User
 import uuid
+from typing import TypeVar
 
 
 def _hash_password(password: str) -> str:
@@ -31,7 +32,8 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user(self, email: str, password: str) -> User:
+    def register_user(self, email: str,
+                      password: str) -> TypeVar(User):
         """ register users """
         user = self._db._session.query(User).filter(
                User.email == email).first()
