@@ -31,15 +31,16 @@ def log_in():
     """logs in
     a user
     """
-    email = request.args.get("email")
-    password = request.args.get("password")
-    has_logged = AUTH.valid_login(email, password)
-    if not has_logged:
-        abort(401)
-    session_id = AUTH.create_session(email)
-    res = jsonify({"email": email, "message": "logged in"})
-    res.set_cookie("session_id", session_id)
-    return res
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        has_logged = AUTH.valid_login(email, password)
+        if not has_logged:
+            abort(401)
+        session_id = AUTH.create_session(email)
+        res = jsonify({"email": email, "message": "logged in"})
+        res.set_cookie("session_id", session_id)
+        return res
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def log_out():
