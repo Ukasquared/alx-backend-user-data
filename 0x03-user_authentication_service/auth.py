@@ -44,16 +44,21 @@ class Auth:
         user = self._db._session.query(User).filter(User.email == email).first()
         if user:
             u_password = password.encode('utf-8')
-            result = bcrypt.checkpw(u_password, user.password)
-            return result
+            result = bcrypt.checkpw(u_password, user.hashed_password)
+            if result:
+                return True
+        return False
 
-    def create_session(self, email: str) -> str:
+    def create_session(self, u_email: str) -> str:
         """ create session """
-        user = self._db.find_user_by(email=email)
-        if user:
-            session_id = _generate_uuid()
-            self._db.update_user(user.id, session_id=session_id)
-            return session_id
+        try:
+            user = self._db.find_user_by(email=u_email)
+            if user:
+                id_session = _generate_uuid()
+                self._db.update_user(user.id, session_id=id_session)
+                return id_session
+        except Exception:
+            return None
 
     def get_user_from_session_id(self, id_session):
         """get user from session
