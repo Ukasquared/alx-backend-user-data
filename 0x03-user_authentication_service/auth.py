@@ -6,7 +6,7 @@ from user import User
 import uuid
 
 
-def _hash_password(password):
+def _hash_password(password: str):
     """ return salted
     password
     """
@@ -21,7 +21,7 @@ def _generate_uuid():
     of uuid
     """
     u_string = uuid.uuid4()
-    return u_string
+    return str(u_string)
  
 
 class Auth:
@@ -31,7 +31,7 @@ class Auth:
     def __init__(self):
         self._db = DB()
 
-    def register_user(self, email, password) -> User:
+    def register_user(self, email: str, password: str) -> User:
         """ register users """
         user = self._db._session.query(User).filter(User.email == email).first()
         if user:
@@ -39,7 +39,7 @@ class Auth:
         new_user = self._db.add_user(email, _hash_password(password))
         return new_user
 
-    def valid_login(self, email, password):
+    def valid_login(self, email: str, password: str) -> bool:
         """ check if existing user can login"""
         user = self._db._session.query(User).filter(User.email == email).first()
         if user:
@@ -47,7 +47,7 @@ class Auth:
             result = bcrypt.checkpw(u_password, user.password)
             return result
 
-    def create_session(self, email):
+    def create_session(self, email: str) -> str:
         """ create session """
         user = self._db.find_user_by(email=email)
         if user:
@@ -66,12 +66,12 @@ class Auth:
         except NoResultFound:
             return None
 
-    def destroy_session(self, user_id):
+    def destroy_session(self, user_id: int) -> None:
         """ destroy existing session
         """
         self._db.update_user(user_id, session_id=None)
 
-    def get_reset_password_token(self, email):
+    def get_reset_password_token(self, email: str) -> str:
         """get user reset token """
         try:
             user = self._db.find_user_by(email=email)
@@ -81,7 +81,7 @@ class Auth:
             raise ValueError
         return token
 
-    def update_password(self, reset_token, password):
+    def update_password(self, reset_token: str, password: str) -> None:
         """ update user password """
         try:
             user = self._db.find_user_by(reset_token=reset_token)
