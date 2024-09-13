@@ -6,7 +6,7 @@ from user import User
 import uuid
 
 
-def _hash_password(password: str):
+def _hash_password(password: str) -> str:
     """ return salted
     password
     """
@@ -16,7 +16,7 @@ def _hash_password(password: str):
     return hash
 
 
-def _generate_uuid():
+def _generate_uuid() -> str:
     """ string representation
     of uuid
     """
