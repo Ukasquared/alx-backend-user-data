@@ -62,11 +62,14 @@ class DB:
         update users
         informaton
         """
+        update_val = {}
         for k, v in kwargs.items():
-            if not hasattr(User, k):
+            if hasattr(User, k):
+                update_val[getattr(User, k)] = v
+            else:
                 raise ValueError
 
         user = self.find_user_by(id=user_id)
         if user:
-            self._session.query(User).filter(User.id == user.id).update(kwargs)
+            self._session.query(User).filter(User.id == user.id).update(update_val)
             self._session.commit()
