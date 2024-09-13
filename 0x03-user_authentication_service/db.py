@@ -48,13 +48,13 @@ class DB:
           returns first found
           user
         """
-        try:
-            curr_user = self._session.query(User).\
-              filter_by(**kwargs).first()
-        except NoResultFound as e:
-            raise(e)
-        except InvalidRequestError as e:
-            raise(e)
+        for k, v in kwargs.items():
+            if not hasattr(User, k):
+                raise InvalidRequestError
+        curr_user = self._session.query(User).\
+            filter_by(**kwargs).first()
+        if curr_user is None:
+            raise NoResultFound
         return curr_user
 
     def update_user(self, user_id, **kwargs) -> None:
